@@ -4,7 +4,7 @@ import './styles/index.css';
 import Tree from './Tree';
 
 let IsNotNullAndHasAny = f => f != null && f.toString().length > 0;
-let getNodeState = self => prop => node => self.getState(this.idFnc(node))[prop];
+let getNodeState = self => prop => node => self.getState(self.idFnc(node))[prop];
 
 class TreeContainer extends Component {
         state = {
