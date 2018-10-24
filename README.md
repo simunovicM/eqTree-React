@@ -1,2 +1,3 @@
-# eqTree-React
-eqNode for React
+# eqtree
+
+React Tree Component for npm
