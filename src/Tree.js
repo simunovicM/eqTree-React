@@ -13,27 +13,30 @@ let mapNode = (node, isRoot, isNodeOpened, drawFnc, idFnc) => {
         childs =
             <ul className="eqtree-children">
                 {node.children.map((f, i) =>
-                    <li key={idFnc(f)} className={getLiClass(f, i === node.children.length - 1, isNodeOpened(f))}>{mapNode(f, false, isNodeOpened, drawFnc, idFnc)}</li>)}
+                    <li key={idFnc(f)}
+                        className={[getLiClass(f, i === node.children.length - 1, isNodeOpened(f)), f.item.class ? f.item.class : ''].join(' ')}>
+                        {mapNode(f, false, isNodeOpened, drawFnc, idFnc)}
+                    </li>)}
             </ul>;
 
     var ret = <Aux>{drawFnc(node, isRoot)}{childs}</Aux>;
     return ret;
 }
 
-const tree = (props) => 
-{
-    let MyLeaf = props.Leaf || Leaf;
+const tree = (props) => {
     return <div className="divTree AsideList eqtree-default" style={{ height: '240px' }}>
         <ul className="eqtree-container-ul">
-            <li className={(getLiClass(props.data, true, props.IsNodeOpened(props.data)))}>
-                {mapNode(props.data, true, props.IsNodeOpened,
-                (f, isRoot) =>
-                    <MyLeaf key={props.idFnc(f)} {...f.item} isRoot={isRoot}
-                        onNodeOpenClick={() => props.OnNodeOpenClick(f)}
-                        onNodeClick={() => props.OnNodeClick(f)}
-                        isSelected={props.IsNodeSelected(f)}
-                        isDisabled={props.IsNodeDisabled(f)}
-                        />, props.idFnc)}
+            <li className={[(getLiClass(props.data, true, props.isNodeOpened(props.data))), props.data.item.class ? props.data.item.class : ''].join(' ')}>
+                {mapNode(props.data, true, props.isNodeOpened,
+                    (f, isRoot) => {
+                        let MyLeaf = f.item.Leaf || props.Leaf || Leaf;
+                        return (<MyLeaf key={f.id} {...f.item} isRoot={isRoot}
+                            onNodeOpenClick={() => props.onNodeOpenClick(f)}
+                            onNodeClick={() => props.onNodeClick(f)}
+                            isSelected={props.isNodeSelected(f)}
+                            isDisabled={props.isNodeDisabled(f)}
+                        />)
+                    }, props.idFnc)}
             </li>
         </ul>
     </div >;
