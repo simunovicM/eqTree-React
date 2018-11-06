@@ -3,7 +3,6 @@ import './styles/index.css';
 
 import Tree from './Tree';
 import leaf from './Nodes/Leaf';
-import leadWrapper from './Nodes/LeafWrapper';
 import leafWrapper from './Nodes/LeafWrapper';
 
 let IsNotNullAndHasAny = f => f != null && f.toString().length > 0;
@@ -22,7 +21,7 @@ class TreeContainer extends Component {
                 return retObj;
             };
 
-            var retObj = {
+            let retObj = {
                 getData: () => this.data,
                 getState: (prop, id) => this.getState(id)[prop],
                 getSelectedNode: () => this.data.find(f => this.drawedData[this.idFnc(f)] && this.drawedData[this.idFnc(f)].selected),
@@ -39,7 +38,14 @@ class TreeContainer extends Component {
             retObj.updateData = data => { this.data = data; return retObj; };
             retObj.redrawTree = () => { this.updateView(); return retObj; };
             retObj.getFilteredAndSortedData = () => this.sortAndFilterNode(this.data);
-            
+
+            retObj.getState = () => {
+                var dat = ({ ...this.drawedData });
+                for (var key in dat) dat[key] = {...dat[key]};
+                return dat;
+            };
+            retObj.setState = state => { this.drawedData = state; return retObj; };
+
             this.onNodeClick = node => {
                 this.changeAllStates('opened', false)
                     .changeAllStates('selected', false)
@@ -55,7 +61,7 @@ class TreeContainer extends Component {
     updateView = () => this.setState({ dummyData: {} });
 
     changeAllStates = (prop, value) => {
-        for (var key in this.drawedData)
+        for (let key in this.drawedData)
             this.drawedData[key][prop] = value;
         return this;
     };
@@ -103,7 +109,7 @@ class TreeContainer extends Component {
 
     render = () => {
         if (!this.data) return;
-        var drawData = this.sortAndFilterNode(this.data);
+        let drawData = this.sortAndFilterNode(this.data);
         return drawData ? <Tree data={drawData}
             isNodeOpened={this.isNodeOpened}
             isNodeSelected={this.isNodeSelected}
