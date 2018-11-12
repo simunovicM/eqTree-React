@@ -24,7 +24,7 @@ let mapNode = (node, isRoot, isNodeOpened, drawFnc, idFnc) => {
 }
 
 const tree = (props) => {
-    return <div className="divTree AsideList eqtree-default" style={{ height: '240px' }}>
+    return <div className="eqtree-default">
         <ul className="eqtree-container-ul">
             <li className={[(getLiClass(props.data, true, props.isNodeOpened(props.data))), props.data.item.class ? props.data.item.class : ''].join(' ')}>
                 {mapNode(props.data, true, props.isNodeOpened,
